@@ -1,0 +1,12 @@
+{
+  "name": "enelar/matrix",
+  "description": "Good mood for my friend",
+  "license": "proprietary",
+  "minimum-stability": "dev",
+  "require" :
+  {
+    "php": "~5.5",
+    "oyejorge/less.php": "~1.5",
+    "phoxy/phoxy": "~1.4.1"
+  }
+}

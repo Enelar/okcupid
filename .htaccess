@@ -1,0 +1,28 @@
+DirectorySlash Off
+RewriteEngine On
+
+RewriteCond %{QUERY_STRING} _escaped_fragment_
+RewriteRule ^(.*)$ engine/shot.php [END,PT,QSA]
+
+RewriteRule ^css$ css/compile.php [END,PT,QSA]
+RewriteRule ^enjs.js$ engine/enjs.php [END,PT,QSA]
+RewriteRule ^robots.txt$ api/utils/robot/robot
+RewriteRule ^sitemap.xml$ api/utils/robot/sitemap
+
+RewriteRule ^api?$ api/main/home [QSA]
+RewriteRule ^api/(.*)$ /rpc.php?REDIRECTIT/$0REDIRECTIT [END,PT,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/ejs [NC]
+RewriteCond %{REQUEST_URI} !^/js [NC]
+RewriteRule ^(.*)$ engine/coldstart.php?url=$1 [END,PT,QSA]
+
+RewriteRule ^$ engine/coldstart.php [END,PT,QSA]
+
+RedirectMatch 403 /\.git
+RedirectMatch 403 /sql
+RedirectMatch 403 secret.yaml
+ErrorDocument 404 /engine/404.php
+
+AddType application/font-woff .woff

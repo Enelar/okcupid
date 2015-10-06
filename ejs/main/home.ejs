@@ -1,0 +1,107 @@
+<canvas></canvas>
+
+<%
+debugger;
+__this.DeferRender('main/Img');
+__this.DeferCascade(function()
+{
+  var c = __this.first()[0];
+  var ctx = c.getContext("2d");
+
+  //making the canvas full screen
+  c.height = window.innerHeight;
+  c.width = window.innerWidth;
+
+  //chinese characters - taken from the unicode charset
+  var chinese = "田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑";
+  //converting the string into an array of single characters
+  chinese = chinese.split("");
+
+  var columns = img.width; // number of columns equal to image width
+  var font_size = c.width / columns; // width of each character
+  //an array of drops - one per column
+  var drops = [];
+  //x below is the x coordinate
+  //1 = y co-ordinate of the drop(same for every drop initially)
+  for(var x = 0; x < columns; x++)
+    drops[x] = Math.floor(Math.random() * img.height);
+
+
+  ctx.fillStyle = "rgb(0, 0, 0)";
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.font = font_size + "px arial";
+
+  var colors =
+  [
+    "92, 29, 146,",
+    "35, 14, 100,", 
+    "4, 4, 52,", 
+    "7, 13, 124,",
+    "31, 139, 201,",
+  ];
+
+  var slices = 10;
+  var max_slices = 15;
+
+  var min = (max_slices - slices);
+
+  //drawing the characters
+  function draw()
+  {
+    //Black BG for the canvas
+    //translucent BG to show trail
+    ctx.fillStyle = "rgba(0, 0, 0, 0.001)";
+    ctx.fillRect(0, 0, c.width, c.height);
+    
+    //looping over drops
+    for(var i = 0; i < drops.length; i++)
+    {
+      var x = Math.floor(i + Math.random() * 2);
+      var y = drops[i];
+
+      if(y >= img.height)
+      {
+        drops[i] = 0;
+        continue;
+      }
+      if (x >= img.width)
+        continue;
+
+      var pixel = img.pixel(x, y);
+
+      if (pixel === undefined)
+        ctx.fillStyle = "#F00";
+      else
+      {
+        pixel = 255 - pixel;
+
+        var slice = pixel / (256 / slices);
+        
+        var cur = Math.ceil(min + slice);
+
+        var ratio = 1 - cur / 15;
+        if (ratio < 0.3)
+          ratio = 0;
+
+        var color = colors[Math.floor(Math.random()*colors.length)];
+
+        ctx.fillStyle = "rgba(" + color + ratio + ")";
+      }
+
+      //a random chinese character to print
+      var text = chinese[Math.floor(Math.random()*chinese.length)];
+      //x = i*font_size, y = value of drops[i]*font_size
+      ctx.fillText(text, x*font_size, y*font_size);
+            
+      //incrementing Y coordinate
+      drops[i] += 1 + Math.floor(Math.random() * 5);
+    }
+  }
+
+  for (var init = 0; init < 100; init++)
+    setTimeout(draw, 0);
+
+  setInterval(draw, 50);
+
+})
+%>

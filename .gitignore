@@ -1,0 +1,5 @@
+*.log
+vendor
+composer.lock
+phoxy
+upload/files
