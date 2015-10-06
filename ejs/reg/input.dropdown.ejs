@@ -1,14 +1,10 @@
-<div class='field'>
-  <label><%@ __this.name %></label>
-
-  <div class="ui selection dropdown">
-    <input type="hidden" name="<%@ __this.name %>">
-    <i class="dropdown icon"></i>
-    <div class="default text"><%@ __this.name %></div>
-    <div class="menu">
-      <div class="item" data-value="1">Male</div>
-      <div class="item" data-value="0">Female</div>
-    </div>
+<div class="ui selection dropdown">
+  <input type="hidden" name="<%@ __this.name %>">
+  <i class="dropdown icon"></i>
+  <div class="default text"><%@ __this.name %></div>
+  <div class="menu">
+    <div class="item" data-value="1">Male</div>
+    <div class="item" data-value="0">Female</div>
   </div>
 </div>
 
@@ -20,6 +16,6 @@ __this.Defer(function()
     __this.first().trigger('check');
   })
 
-  __this.first().find('.dropdown').dropdown()
+  __this.first().dropdown()
 })
 %>
