@@ -33,6 +33,7 @@ var warmup_obj =
     phoxy.Config()['api_dir'] = '/' + phoxy.Config()['api_dir'];
     phoxy.Config()['ejs_dir'] = '/' + phoxy.Config()['ejs_dir'];
     phoxy.Config()['js_dir'] = '/' + phoxy.Config()['js_dir'];
+    EJS.IsolationDepth = 3;
 
     $('head').append
     (
@@ -63,7 +64,7 @@ var warmup_obj =
     phoxy.Override('ChangeURL', function(url)
     {
       var ret = arguments.callee.origin.apply(this, arguments);
-      analytics.page();
+      //analytics.page();
       return ret;
     })
 

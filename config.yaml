@@ -1,2 +1,244 @@
-empty:
-  config
+strings:
+  country:
+  - United States
+  - United Kingdom
+  - Canada
+  - Australia
+  - Singapore
+  - Ireland
+  - New Zealand
+  - Philippines
+  - Sweden
+  - Finland
+  - Afghanistan
+  - Albania
+  - Algeria
+  - Andorra
+  - Angola
+  - Anguilla
+  - Antigua and Barbuda
+  - Argentina
+  - Armenia
+  - Aruba
+  - Ashmore and Cartier Islands
+  - Austria
+  - Azerbaijan
+  - Bahamas
+  - Bahrain
+  - Bangladesh
+  - Barbados
+  - Belarus
+  - Belgium
+  - Belize
+  - Benin
+  - Bermuda
+  - Bhutan
+  - Bolivia
+  - Bosnia and Herzegovina
+  - Botswana
+  - Brazil
+  - British Virgin Islands
+  - Brunei
+  - Bulgaria
+  - Burkina Faso
+  - Burma
+  - Burundi
+  - Cambodia
+  - Cameroon
+  - Cape Verde
+  - Cayman Islands
+  - Central African Republic
+  - Chad
+  - Chile
+  - China
+  - Christmas Island
+  - Colombia
+  - Comoros
+  - Congo
+  - Cook Islands
+  - Coral Sea Islands
+  - Costa Rica
+  - Cote d'Ivoire
+  - Croatia
+  - Cuba
+  - Cyprus
+  - Czech Republic
+  - Democratic Republic of the Congo
+  - Denmark
+  - Djibouti
+  - Dominica
+  - Dominican Republic
+  - East Timor
+  - Ecuador
+  - Egypt
+  - El Salvador
+  - Equatorial Guinea
+  - Eritrea
+  - Estonia
+  - Ethiopia
+  - Europa Island
+  - Falkland Islands
+  - Faroe Islands
+  - Fiji
+  - France
+  - French Guiana
+  - French Polynesia
+  - French Southern and Antarctic Lands
+  - Gabon
+  - Gambia
+  - Gaza Strip
+  - Georgia
+  - Germany
+  - Ghana
+  - Gibraltar
+  - Glorioso Islands
+  - Greece
+  - Greenland
+  - Grenada
+  - Guadeloupe
+  - Guatemala
+  - Guernsey
+  - Guinea
+  - Guinea-Bissau
+  - Guyana
+  - Haiti
+  - Heard Island and McDonald Islands
+  - Honduras
+  - Hong Kong
+  - Hungary
+  - Iceland
+  - India
+  - Indonesia
+  - Iran
+  - Iraq
+  - Isle of Man
+  - Israel
+  - Italy
+  - Jamaica
+  - Jan Mayen
+  - Japan
+  - Jersey
+  - Jordan
+  - Juan de Nova Island
+  - Kazakhstan
+  - Kenya
+  - Kiribati
+  - Kuwait
+  - Kyrgyzstan
+  - Laos
+  - Latvia
+  - Lebanon
+  - Lesotho
+  - Liberia
+  - Libya
+  - Liechtenstein
+  - Lithuania
+  - Luxembourg
+  - Macau
+  - Macedonia
+  - Madagascar
+  - Malawi
+  - Malaysia
+  - Maldives
+  - Mali
+  - Malta
+  - Marshall Islands
+  - Martinique
+  - Mauritania
+  - Mauritius
+  - Mayotte
+  - Mexico
+  - Micronesia Federal States
+  - Moldova
+  - Monaco
+  - Mongolia
+  - Montenegro
+  - Montserrat
+  - Morocco
+  - Mozambique
+  - Namibia
+  - Nauru
+  - Nepal
+  - Netherlands
+  - Netherlands Antilles
+  - New Caledonia
+  - Nicaragua
+  - Niger
+  - Nigeria
+  - Niue
+  - No Man's Land
+  - Norfolk Island
+  - North Korea
+  - Norway
+  - Oceans
+  - Oman
+  - Pakistan
+  - Palau
+  - Panama
+  - Papua New Guinea
+  - Paraguay
+  - Peru
+  - Pitcairn Islands
+  - Poland
+  - Portugal
+  - Qatar
+  - Reunion
+  - Romania
+  - Russia
+  - Rwanda
+  - Saint Helena
+  - Saint Kitts and Nevis
+  - Saint Lucia
+  - Saint Pierre and Miquelon
+  - Saint Vincent and the Grenadines
+  - Samoa
+  - San Marino
+  - Sao Tome and Principe
+  - Saudi Arabia
+  - Senegal
+  - Serbia
+  - Seychelles
+  - Sierra Leone
+  - Slovakia
+  - Slovenia
+  - Solomon Islands
+  - Somalia
+  - South Africa
+  - South Georgia and the South Sandwich Islands
+  - South Korea
+  - Spain
+  - Spratly Islands
+  - Sri Lanka
+  - Sudan
+  - Suriname
+  - Svalbard
+  - Swaziland
+  - Switzerland
+  - Syria
+  - Taiwan
+  - Tajikistan
+  - Tanzania
+  - Thailand
+  - Togo
+  - Tokelau
+  - Tonga
+  - Trinidad and Tobago
+  - Tunisia
+  - Turkey
+  - Turkmenistan
+  - Turks and Caicos Islands
+  - Tuvalu
+  - Uganda
+  - Ukraine
+  - United Arab Emirates
+  - Uruguay
+  - Uzbekistan
+  - Vanuatu
+  - Venezuela
+  - Vietnam
+  - Wallis and Futuna
+  - West Bank
+  - Western Sahara
+  - Yemen
+  - Zambia
+  - Zimbabwe

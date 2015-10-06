@@ -1,0 +1,17 @@
+<%
+this.chain(function()
+{
+  debugger;
+  var that = this;
+
+  that.first().on('check', function()
+  {
+    var val = $(this).val();
+    phoxy.ApiRequest(['reg/check', __this.name, val], function(r)
+    {
+      var method = r.data.check ? "removeClass" : "addClass";
+      that.first()[method]("error");
+    })
+  })
+})
+%>

@@ -1,0 +1,17 @@
+<%
+debugger;
+if (__this.input === undefined)
+  __this.input = "reg/input.text";
+
+var chain =
+{
+  chain:
+  [
+    __this.input,
+    'reg/input.check',
+  ],
+  data: __this,
+};
+
+__this.CascadeDesign('snippets/chain', chain);
+%>

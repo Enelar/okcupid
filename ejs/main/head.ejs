@@ -6,11 +6,11 @@
 </div>
 
 <%
-this.escape().recursive++; // forcing wait for script load
-this.Defer(function()
+__this.escape().recursive++; // forcing wait for script load
+__this.Defer(function()
 {
   var scripts = [];
-  this.first().find('require').detach().each(function()
+  __this.first().find('require').detach().each(function()
   {
     scripts.push($(this).attr('src'));
   });
@@ -18,12 +18,10 @@ this.Defer(function()
   require(scripts, function()
   {
     phoxy.Log(3, "Head scripts loaded");
-    __context.escape().CheckIsCompleted.call(__context);
+    __this.escape().CheckIsCompleted.call(__this);
   });
 
   var element = this.first().detach();
   $('head').append(element);
 })
 %>
-
-<div id='hat'></div>
