@@ -42,7 +42,10 @@ class check extends api
       "referer" => "https://www.okcupid.com/",
       "user-agent" => "Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2522.1 Safari/537.36",
       "x-requested-with" => "XMLHttpRequest",
+      "x-okcupid-platform" => "DESKTOP",
     ];
+
+    $basic_headers = [];
 
     $text = $this->curl($url, $post, $basic_headers);
     $obj = json_decode($text, true);
@@ -56,12 +59,13 @@ class check extends api
     //conf()->strings->contry;
   }
 
-  protected function city($city, $country)
+  protected function city($city)
   {
-    $url = "https://www.okcupid.com/apitun/location/query?&access_token=&q={$city}, {$country}";
+    $city = urlencode($city);
+    $url = "https://www.okcupid.com/apitun/location/query?&access_token=&q={$city}";
     $res = $this->request($url);
 
-    $res->check = $res->status != 0;
+    $res->check = $res->status == 0;
     return
     [
       'data' => $res,
