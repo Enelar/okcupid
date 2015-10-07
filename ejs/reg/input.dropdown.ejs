@@ -1,15 +1,49 @@
+<%
+function display_value(v)
+{
+%>
+  <div class="item" data-value="<%@ v %>"><%@ v %></div>
+<%
+}
+
+var display_values =
+{
+  design: 'snippets/each',
+  data:
+  {
+    each: display_value,
+    arr: __this.values,
+  },
+}
+
+var download_values =
+{
+  design: 'snippets/data_download',
+  data: display_values,
+};
+
+// download values commands
+download_values.data.source = __this.values;
+download_values.data.from = 'country_list';
+download_values.data.into = "arr";
+
+var request = typeof __this.values == 'string' ? download_values : display_values;
+
+%>
+
 <div class="ui selection dropdown">
   <input type="hidden" name="<%@ __this.name %>">
   <i class="dropdown icon"></i>
   <div class="default text"><%@ __this.name %></div>
   <div class="menu">
+    <% __this.CascadeDesign(request) %>
     <div class="item" data-value="1">Male</div>
     <div class="item" data-value="0">Female</div>
   </div>
 </div>
 
 <%
-__this.Defer(function()
+__this.DeferCascade(function()
 {
   __this.first().find('input').change(function(event)
   {

@@ -21,7 +21,7 @@ class config
 
     $config = $public;
     $config = array_merge_recursive($config, $this->load_file($public['config_location']));
-    $config = array_merge_recursive($config, $this->load_file($public['secret_location']));
+    //$config = array_merge_recursive($config, $this->load_file($public['secret_location']));
 
     $config = new \phpa2o\phpa2o($config);
 

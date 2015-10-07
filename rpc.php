@@ -7,6 +7,8 @@ define('PRODUCTION', false);
 error_reporting(E_ALL);
 ini_set('display_errors','On');
 
+require_once('utils/config.php');
+
 
 function real_ip()
 {

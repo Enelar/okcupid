@@ -14,4 +14,9 @@ class reg extends api
   {
     return strlen($value) > 5;
   }
+
+  protected function country_list()
+  {
+    return conf()->strings->country;
+  }
 }

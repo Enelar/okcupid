@@ -7,6 +7,7 @@
   {
     "php": "~5.5",
     "oyejorge/less.php": "~1.5",
-    "phoxy/phoxy": "~1.4.1"
+    "phoxy/phoxy": "~1.4.1",
+    "enelar/phpa2o": "~0.0"
   }
 }

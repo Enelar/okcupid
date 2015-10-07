@@ -33,11 +33,22 @@ class check extends api
 
   private function request($url, $post = null, $headers = [])
   {
-    $text = $this->curl($url, $post, $headers);
+    $basic_headers =
+    [
+      "accept" => "application/json, text/javascript, */*; q=0.01",
+      "accept-language" => "en-US,en;q=0.8",
+      "cache-control" => "no-cache",
+      "pragma" => "no-cache",
+      "referer" => "https://www.okcupid.com/",
+      "user-agent" => "Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2522.1 Safari/537.36",
+      "x-requested-with" => "XMLHttpRequest",
+    ];
+
+    $text = $this->curl($url, $post, $basic_headers);
     $obj = json_decode($text, true);
 
     phoxy_protected_assert($obj, ["error" => "Failure at json decode", "json" => $text]);
-    return $obj;
+    return new \phpa2o\phpa2o($obj);
   }
 
   protected function country()
@@ -48,10 +59,13 @@ class check extends api
   protected function city($city, $country)
   {
     $url = "https://www.okcupid.com/apitun/location/query?&access_token=&q={$city}, {$country}";
-    $res = $this->curl($url);
+    $res = $this->request($url);
 
     $res->check = $res->status != 0;
-    return $res;
+    return
+    [
+      'data' => $res,
+    ];
 
     // {"results" : [{"postal_code" : "", "nameid" : 3806601, "display_state" : 0, "locid" : 270999, "state_code" : "48", "country_name" : "Russia", "longitude" : 3761556, "popularity" : 5019, "state_name" : "48", "country_code" : "RS", "city_name" : "Moscow", "metro_area" : 0, "latitude" : 5575222}], "status" : 0}
   }
@@ -59,15 +73,18 @@ class check extends api
   protected function email($email)
   {
     $url = "https://www.okcupid.com/signup?check_email={$email}";
-    $res = $this->curl($url);
+    $res = $this->request($url);
 
     $res->check = $res->valid && $res->available;
-    return $res;
+    return
+    [
+      'data' => $res,
+    ];
 
     // {"email" : "test@", "valid" : true, "available" : true}
   }
 
-  protected function username($username)
+  protected function nickname($username)
   {
     $url = "https://www.okcupid.com/signup";
     $post =
@@ -77,10 +94,13 @@ class check extends api
       'template' => 'signup',
     ];
 
-    $res = $this->curl($url, $post);
+    $res = $this->request($url, $post);
 
     $res->check = $res->valid && $res->available;
-    return $res;
+    return
+    [
+      'data' => $res,
+    ];
 
     // {"valid" : true, "available" : true}
   }
@@ -93,10 +113,13 @@ class check extends api
       'password' => $password,
     ];
 
-    $res = $this->curl($url, $post);
+    $res = $this->request($url, $post);
 
     $res->check = $res->is_valid;
-    return $res;
+    return
+    [
+      'data' => $res,
+    ];
 
     // {"is_valid" : false}
   }
