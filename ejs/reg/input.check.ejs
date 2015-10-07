@@ -1,17 +1,20 @@
 <div class='field'>
-  <label><%@ __this.name %></label>
+  <label><%@ __this.data.name %></label>
 
 <%
-this.chain(function()
+__this.chain(function()
 {
+  if (__this.data.nocheck)
+    return;
+
   var that = this;
 
   that.first().on('check', function()
   {
     var val = $(this).val();
-    phoxy.ApiRequest(['reg/check', __this.name, val], function(r)
+    phoxy.AJAX(['integration/check/' + __this.data.name, val], function(r)
     {
-      var method = r.data.check ? "removeClass" : "addClass";
+      var method = (!r.error && r.data.check) ? "removeClass" : "addClass";
       __this.first()[method]("error");
     })
   })

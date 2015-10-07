@@ -1,0 +1,22 @@
+<div class='city'>
+<%
+  __this.CascadeDesign('reg/input', {nocheck: true, input: "dropdown", name: "country", values: "reg/country_list"});
+  __this.CascadeDesign('reg/input', {nocheck: true, name: "city"});
+%>
+</div>
+
+<%
+__this.DeferCascade(function()
+{
+  __this.first().find('.field > label + *').on('check', function(event)
+  {
+    var city = __this.first().find('[name="city"]').val();
+    var country = __this.first().find('[name="country"]').val();
+
+    if (!city.length || !country.length)
+      event.stopPropagation()
+
+    __this.first().val('' + city + ', ' + country);
+  })
+})
+%>
