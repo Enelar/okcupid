@@ -15,16 +15,19 @@ class check extends api
     if (!is_null($post))
     {
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
     }
+
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_ENCODING ,"utf-8");
 
-    //var_dump($post, $head);
 
     $server_output = curl_exec ($ch);
+
+    //echo(curl_getinfo($ch, CURLINFO_HEADER_OUT));
 
     curl_close ($ch);
 
@@ -43,9 +46,11 @@ class check extends api
       "user-agent" => "Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2522.1 Safari/537.36",
       "x-requested-with" => "XMLHttpRequest",
       "x-okcupid-platform" => "DESKTOP",
+      "content-type" => "application/x-www-form-urlencoded; charset=UTF-8",
     ];
 
-    $basic_headers = [];
+    foreach ($headers as $k => $v)
+      $basic_headers[$k] = $v;
 
     $text = $this->curl($url, $post, $basic_headers);
     $obj = json_decode($text, true);
@@ -98,7 +103,12 @@ class check extends api
       'template' => 'signup',
     ];
 
-    $res = $this->request($url, $post);
+    $headers =
+    [
+      'referer' => 'https://www.okcupid.com/login?p=/onboarding/steps',
+    ];
+
+    $res = $this->request($url, $post, $headers);
 
     $res->check = $res->valid && $res->available;
     return
