@@ -3,5 +3,38 @@
 __this.CascadeDesign('reg/input', {name: "email"});
 __this.CascadeDesign('reg/input', {name: "nickname"});
 __this.CascadeDesign('reg/city');
+
+__this.CascadeDesign('reg/input', {nocheck: true, input: "dropdown", name: "gender", values: { 1: "Woman", 2: "Man" }});
+__this.CascadeDesign('reg/input', {nocheck: true, input: "dropdown", name: "orientation", values: { 1: "Straight", 2: "Gay", 3: "Bisexual" }});
+
+__this.CascadeDesign('reg/input', {nocheck: true, name: "birthday"});
+__this.CascadeDesign('reg/input', {nocheck: true, name: "birthmonth"});
+__this.CascadeDesign('reg/input', {nocheck: true, name: "birthyear"});
+
 %>
+  <button class='ui submit button'>Submit</button>
 </div>
+
+<%
+__this.Defer(function()
+{
+  __this.first().find('.submit.button').click(function()
+  {
+    if (__this.first().find('.error').size())
+      return;
+
+    // Canceling on error
+
+    var obj = {};
+    __this.first().find('input').each(function()
+    {
+      obj[$(this).attr('name')] = $(this).val();
+    });
+
+    phoxy.ApiRequest(['reg/submit', obj], function(r)
+    {
+      alert('Your password is: ' + r.data.password);
+    })
+  })
+});
+%>
