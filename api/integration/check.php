@@ -203,7 +203,7 @@ class check extends api
 
     $token = $this->login($obj->nickname, "qwertyqwerty");
 
-    var_dump($_SESSION, $token);
+    //var_dump($_SESSION, $token);
 
     if (!$token)
       return
