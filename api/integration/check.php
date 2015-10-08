@@ -73,7 +73,7 @@ class check extends api
 
   private function request($url, $post = null, $headers = [])
   {
-    $text = $this->request_no_json($url, $post, $basic_headers);
+    $text = $this->request_no_json($url, $post, $headers);
     $obj = json_decode($text, true);
 
     phoxy_protected_assert($obj, ["error" => "Failure at json decode", "json" => $text]);
