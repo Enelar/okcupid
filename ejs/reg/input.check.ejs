@@ -2,6 +2,7 @@
   <label><%@ __this.data.name %></label>
 
 <%
+var active = null;
 __this.chain(function()
 {
   if (__this.data.nocheck)
@@ -9,14 +10,29 @@ __this.chain(function()
 
   var that = this;
 
-  that.first().on('check', function()
+  var checked;
+
+  function Send()
   {
-    var val = $(this).val();
+    var val = that.first().val();
+
+    if (val.length < 3)
+      return;
+    if (val == checked)
+      return;
+    checked = val;
+
     phoxy.AJAX(['integration/check/' + __this.data.name, val], function(r)
     {
       var method = (!r.error && r.data.check) ? "removeClass" : "addClass";
       __this.first()[method]("error");
     })
+  }
+
+  that.first().on('check', function()
+  {
+    clearTimeout(active)
+    active = setTimeout(Send, 500);
   })
 })
 %>
