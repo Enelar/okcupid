@@ -17,12 +17,16 @@ class check extends api
     if (!is_null($post))
     {
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+      if (is_array($post))
+        $post = http_build_query($post);
+
+      var_dump($post);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     }
 
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_VERBOSE, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 1);
+    //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    //curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
@@ -236,9 +240,9 @@ class check extends api
     // var ACCESS_TOKEN = "1,0,1444325985,0xfcc4725ec8412007;26e3fe8859b9493631ecc12f80c7c7a674768fb9";
     $match = preg_match("/var ACCESS_TOKEN = \"(.*?)\"/", $site, $matches);
 
-    phoxy_protected_assert($match, "Login failed!!");
+    phoxy_protected_assert($match, "Login failed!! Maybe your IP hit black list?");
 
-    phoxy_protected_assert(count($matches) > 1, "Access token not found!");
+    phoxy_protected_assert(count($matches) > 1, "Access token not found! Api changed!");
 
     return $matches[1];
   }
@@ -248,5 +252,60 @@ class check extends api
     phoxy_protected_assert($_SESSION['token'], "Login required!!");
     $url = "http://www.okcupid.com/apitun/messages/send?&access_token={$_SESSION['token']}";
 
+    $post =
+    [
+      "body" => $message,
+      "is_mutual_match" => 0,
+      "only_messaging_group" => "",
+      "receiverid" => "17122215878593439789",
+      "reply" => "1",
+      "source" => "desktop_messages",
+      "threadid" => "1250354456975657002",
+    ];
+
+    var_dump($post);
+
+    $headers =
+    [
+      "origin" => "https://www.okcupid.com",
+      "referer" => "https://www.okcupid.com/",
+      "x-requested-with" => "XMLHttpRequest",
+    ];
+
+    $res = $this->request_no_json($url, json_encode($post), $headers);
+  }
+
+  protected function welcome($name, $message)
+  {
+    phoxy_protected_assert($_SESSION['token'], "Login required!!");
+    $url = "http://www.okcupid.com/apitun/messages/send?&access_token={$_SESSION['token']}";
+
+    $post =
+    [
+      "body" => $message,
+      "only_messaging_group" => "",
+      "panel_group" => "control",
+      "profile_tab" => "profile",
+      "receiverid" => $this->get_receiver_by_nick($name),
+      "reply" => 0,
+      "service" => "profile",
+      "source" => "desktop_global",
+    ];
+
+    $res = $this->request($url, json_encode($post));
+    return $res->success && $res->status == 0 && $res->pending == 0;
+  }
+
+  protected function get_receiver_by_nick($nick)
+  {
+    $site = $this->curl("http://www.okcupid.com/profile/{$nick}");
+
+    //echo $site;
+    // GlobalMessaging.open('4205836261586580239')
+    $match = preg_match("/GlobalMessaging.open.*?(\d+)/", $site, $matches);
+    phoxy_protected_assert($match, "Receiver id determination failed. Api changed?");
+    phoxy_protected_assert(count($matches) > 1, "Access token not found! Api changed!");
+
+    return $matches[1];
   }
 }

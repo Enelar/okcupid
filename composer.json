@@ -9,6 +9,6 @@
     "oyejorge/less.php": "~1.5",
     "phoxy/phoxy": "~1.4.1",
     "enelar/phpa2o": "~0.0",
-    "PHPOffice/PHPExcel": "~1.8"
+    "querypath/QueryPath": "~3.0.0"
   }
 }
