@@ -19,4 +19,9 @@ class reg extends api
   {
     return conf()->strings->country;
   }
+
+  protected function submit($obj)
+  {
+    return $this('api/integration', 'check')->signup($obj);
+  }
 }

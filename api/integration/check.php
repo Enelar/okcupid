@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 class check extends api
 {
   private function curl($url, $post = null, $headers = [])
@@ -18,23 +20,33 @@ class check extends api
       curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
     }
 
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_VERBOSE, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, $head);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_ENCODING ,"utf-8");
 
+    $cookiefile = tempnam('/tmp', 'foo');
+
+    file_put_contents($cookiefile, $_SESSION['cookie']);
+    curl_setopt ($ch, CURLOPT_COOKIEFILE, $cookiefile);
+    curl_setopt ($ch, CURLOPT_COOKIEJAR, $cookiefile);
 
     $server_output = curl_exec ($ch);
 
-    //echo(curl_getinfo($ch, CURLINFO_HEADER_OUT));
+    echo(curl_getinfo($ch, CURLINFO_HEADER_OUT));
 
     curl_close ($ch);
+
+    $_SESSION['cookie'] = file_get_contents($cookiefile);
 
     return $server_output;
   }
 
-  private function request($url, $post = null, $headers = [])
+  private function request_no_json($url, $post = null, $headers = [])
   {
     $basic_headers =
     [
@@ -52,7 +64,12 @@ class check extends api
     foreach ($headers as $k => $v)
       $basic_headers[$k] = $v;
 
-    $text = $this->curl($url, $post, $basic_headers);
+    return $this->curl($url, $post, $basic_headers);
+  }
+
+  private function request($url, $post = null, $headers = [])
+  {
+    $text = $this->request_no_json($url, $post, $basic_headers);
     $obj = json_decode($text, true);
 
     phoxy_protected_assert($obj, ["error" => "Failure at json decode", "json" => $text]);
@@ -138,38 +155,98 @@ class check extends api
     // {"is_valid" : false}
   }
 
-  protected function signup()
+  protected function signup($obj)
   {
-    // https://www.okcupid.com/signup
-    // POST
+    $url = "https://www.okcupid.com/signup";
 
-    // experiment_name:2014_simpleblue
-    // corrections_page:/signup/paths/2014_simpleblue/index.html
-    // start_time:1444211690968
-    // status:1
-    // opento:1
-    // opento:2
-    // opento:3
-    // success_page:/signup/tracker.html
-    // cf:loggedout_new_template
-    // orientation:1
-    // orientation_dropdown:1
-    // gender:2
-    // gender_dropdown:2
-    // birthmonth:3
-    // birthday:20
-    // birthyear:1980
-    // country_select:Russia
-    // zip_or_city:Moscow
-    // locid:270999
-    // lquery:Moscow
-    // email:test@
-    // email2:test@
-    // screenname:username674019
-    // password:qwertyqwerty
-    // gender_tags:999
-    // orientation_tags:999
+    $post =
+    [
+      "experiment_name" => "2014_simpleblue",
+      "corrections_page" => "/signup/paths/2014_simpleblue/index.html",
+      "start_time" => time() - 1000,
+      "status" => 1,
+      "opento" => 1,
+      "opento" => 2,
+      "opento" => 3,
+      "success_page" => "/signup/tracker.html",
+      "cf" => "loggedout_new_template",
+      "orientation" => $obj->orientation,
+      "orientation_dropdown" => $obj->orientation,
+      "gender" => $obj->gender,
+      "gender_dropdown" => $obj->gender,
+      "birthmonth" => $obj->birthmonth,
+      "birthday" => $obj->birthday,
+      "birthyear" => $obj->birthyear,
+      "country_select" => $obj->country,
+      "zip_or_city" => $obj->city,
+      "locid" => "270999",
+      "lquery" => $obj->city,
+      "email" => $obj->email,
+      "email2" => $obj->email,
+      "screenname" => $obj->nickname,
+      "password" => "qwertyqwerty",
+      "gender_tags" => "999",
+      "orientation_tags" => "999",
+    ];
+
+    $res = $this->request_no_json($url, $post);
+
+    echo $res;
+    die();
+
+    //$res->check = $res->is_valid;
+    return
+    [
+      'data' => $res,
+    ];
+
 
     // EMPTY
+  }
+
+  protected function login($username, $password)
+  {
+    $url = "https://www.okcupid.com/login";
+
+    $post =
+    [
+      "username" => $username,
+      "password" => $password,
+      "okc_api" => 1,
+    ];
+
+    var_dump($post);
+
+    $headers =
+    [
+      "origin" => "https://www.okcupid.com",
+      "referer" => "https://www.okcupid.com/",
+      "x-requested-with" => "XMLHttpRequest",
+    ];
+
+    $res = $this->request_no_json($url, $post, $headers);
+
+    $_SESSION['token'] = $this->get_access_token();
+    var_dump($_SESSION['token']);
+  }
+
+  public function get_access_token()
+  {
+    $site = $this->curl("https://www.okcupid.com/home");
+    // var ACCESS_TOKEN = "1,0,1444325985,0xfcc4725ec8412007;26e3fe8859b9493631ecc12f80c7c7a674768fb9";
+    $match = preg_match("/var ACCESS_TOKEN = \"(.*?)\"/", $site, $matches);
+
+    phoxy_protected_assert($match, "Login failed!!");
+
+    phoxy_protected_assert(count($matches) > 1, "Access token not found!");
+
+    return $matches[1];
+  }
+
+  public function send_to($name, $message)
+  {
+    phoxy_protected_assert($_SESSION['token'], "Login required!!");
+    $url = "http://www.okcupid.com/apitun/messages/send?&access_token={$_SESSION['token']}";
+
   }
 }
