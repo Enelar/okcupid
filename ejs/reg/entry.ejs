@@ -33,7 +33,7 @@ __this.Defer(function()
 
     phoxy.ApiRequest(['reg/submit', obj], function(r)
     {
-      alert('Your password is: ' + r.data.password);
+      phoxy.Reset('/test');
     })
   })
 });
