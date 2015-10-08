@@ -1,8 +1,10 @@
 <%
-function display_value(v)
+function display_value(v, k)
 {
+  if (__this.value_is_index)
+    k = v;
 %>
-  <div class="item" data-value="<%@ v %>"><%@ v %></div>
+  <div class="item" data-value="<%@ k %>"><%@ v %></div>
 <%
 }
 
