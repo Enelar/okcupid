@@ -195,6 +195,22 @@ class check extends api
 
     $res = $this->request_no_json($url, $post);
 
+    if (strpos($res, "Prove that you’re human"))
+      return
+      [
+        "issue" => "Sorry, service ask CAPCHA for this IP. Currently prototype cant solve it",
+      ];
+
+    $token = $this->login($obj->nickname, "qwertyqwerty");
+
+    var_dump($_SESSION, $token);
+
+    if (!$token)
+      return
+      [
+        "issue" => "Registration failed. Empty server answer. Is your IP blacklisted already?",
+      ];
+
     $_SESSION['login'] = $obj->nickname;
     $_SESSION['password'] = "qwertyqwerty";
 
@@ -229,13 +245,13 @@ class check extends api
 
     $res = $this->request_no_json($url, $post, $headers);
 
-    $_SESSION['token'] = $this->get_access_token();
-    //var_dump($_SESSION['token']);
+    return $_SESSION['token'] = $this->get_access_token();
   }
 
   public function get_access_token()
   {
     $site = $this->curl("https://www.okcupid.com/home");
+
     // var ACCESS_TOKEN = "1,0,1444325985,0xfcc4725ec8412007;26e3fe8859b9493631ecc12f80c7c7a674768fb9";
     $match = preg_match("/var ACCESS_TOKEN = \"(.*?)\"/", $site, $matches);
 

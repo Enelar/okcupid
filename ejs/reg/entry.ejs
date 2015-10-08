@@ -31,9 +31,13 @@ __this.Defer(function()
       obj[$(this).attr('name')] = $(this).val();
     });
 
+    var button = $(this).addClass('loading');
+
     phoxy.ApiRequest(['reg/submit', obj], function(r)
     {
-      phoxy.Reset('/test');
+      button.removeClass('loading');
+      if (r.issue)
+        alert(r.issue);
     })
   })
 });

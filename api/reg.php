@@ -22,6 +22,6 @@ class reg extends api
 
   protected function submit($obj)
   {
-    return $this('api/integration', 'check')->signup($obj);
+    return $this('api/integration', 'check', true)->signup($obj);
   }
 }
