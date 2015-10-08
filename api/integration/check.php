@@ -20,7 +20,7 @@ class check extends api
       if (is_array($post))
         $post = http_build_query($post);
 
-      var_dump($post);
+      //var_dump($post);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
     }
 
@@ -41,7 +41,7 @@ class check extends api
 
     $server_output = curl_exec ($ch);
 
-    echo(curl_getinfo($ch, CURLINFO_HEADER_OUT));
+    //echo(curl_getinfo($ch, CURLINFO_HEADER_OUT));
 
     curl_close ($ch);
 
@@ -195,22 +195,21 @@ class check extends api
 
     $res = $this->request_no_json($url, $post);
 
-    echo $res;
-    die();
+    $_SESSION['login'] = $obj->nickname;
+    $_SESSION['password'] = "qwertyqwerty";
 
-    //$res->check = $res->is_valid;
     return
     [
-      'data' => $res,
+      "reset" => "/test",
     ];
-
-
-    // EMPTY
   }
 
   protected function login($username, $password)
   {
     $url = "https://www.okcupid.com/login";
+
+    $_SESSION['login'] = $username;
+    $_SESSION['password'] = $password;
 
     $post =
     [
@@ -219,7 +218,7 @@ class check extends api
       "okc_api" => 1,
     ];
 
-    var_dump($post);
+    //var_dump($post);
 
     $headers =
     [
@@ -231,7 +230,7 @@ class check extends api
     $res = $this->request_no_json($url, $post, $headers);
 
     $_SESSION['token'] = $this->get_access_token();
-    var_dump($_SESSION['token']);
+    //var_dump($_SESSION['token']);
   }
 
   public function get_access_token()
@@ -263,7 +262,7 @@ class check extends api
       "threadid" => "1250354456975657002",
     ];
 
-    var_dump($post);
+    // var_dump($post);
 
     $headers =
     [

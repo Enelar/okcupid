@@ -1,0 +1,36 @@
+<div>
+  <h1 class='ui header'>Loggined as <%@ __this.login %></h1>
+  <div class='ui subheader'>Use '<%@ __this.password %>' password to check results</div>
+
+  Active token: <%@ __this.token %>
+
+  <div class='ui divider'>Send message</div>
+  <div class='ui form'>
+<%
+__this.CascadeDesign('reg/input', {nocheck: true, name: "nickname"})
+__this.CascadeDesign('reg/input', {nocheck: true, name: "message"})
+%>
+    <button class='ui button'>Send</button>
+  </div>
+</div>
+
+<%
+__this.Defer(function()
+{
+  __this.first().find('.button').click(function()
+  {
+    var to = __this.first().find('input[name="nickname"]').val();
+    var message = __this.first().find('input[name="message"]').val();
+
+    var button = $(this).addClass('loading');
+    phoxy.ApiRequest(['test/send', to, encodeURIComponent(message)], function(r)
+    {
+      button.removeClass('loading');
+
+      var aclass = r.data.send ? 'positive' : 'negative';
+
+      button.addClass(aclass);
+    });
+  })
+})
+%>
