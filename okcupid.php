@@ -1,8 +1,10 @@
-<?php
+<?php namespace okcupid;
+
+require 'vendor/autoload.php';
 
 session_start();
 
-class check extends api
+class okcupid
 {
   private function curl($url, $post = null, $headers = [])
   {
@@ -80,12 +82,7 @@ class check extends api
     return new \phpa2o\phpa2o($obj);
   }
 
-  protected function country()
-  {
-    //conf()->strings->contry;
-  }
-
-  protected function city($city)
+  final public function city($city)
   {
     $city = urlencode($city);
     $url = "https://www.okcupid.com/apitun/location/query?&access_token=&q={$city}";
@@ -100,7 +97,7 @@ class check extends api
     // {"results" : [{"postal_code" : "", "nameid" : 3806601, "display_state" : 0, "locid" : 270999, "state_code" : "48", "country_name" : "Russia", "longitude" : 3761556, "popularity" : 5019, "state_name" : "48", "country_code" : "RS", "city_name" : "Moscow", "metro_area" : 0, "latitude" : 5575222}], "status" : 0}
   }
 
-  protected function email($email)
+  final public function email($email)
   {
     $url = "https://www.okcupid.com/signup?check_email={$email}";
     $res = $this->request($url);
@@ -114,7 +111,7 @@ class check extends api
     // {"email" : "test@", "valid" : true, "available" : true}
   }
 
-  protected function nickname($username)
+  final public function nickname($username)
   {
     $url = "https://www.okcupid.com/signup";
     $post =
@@ -140,7 +137,7 @@ class check extends api
     // {"valid" : true, "available" : true}
   }
 
-  protected function password($password)
+  final public function password($password)
   {
     $url = "https://www.okcupid.com/1/apitun/okc/check_password";
     $post =
@@ -159,7 +156,7 @@ class check extends api
     // {"is_valid" : false}
   }
 
-  protected function signup($obj)
+  final public function signup($obj)
   {
     $url = "https://www.okcupid.com/signup";
 
@@ -174,21 +171,21 @@ class check extends api
       "opento" => 3,
       "success_page" => "/signup/tracker.html",
       "cf" => "loggedout_new_template",
-      "orientation" => $obj->orientation,
-      "orientation_dropdown" => $obj->orientation,
-      "gender" => $obj->gender,
-      "gender_dropdown" => $obj->gender,
-      "birthmonth" => $obj->birthmonth,
-      "birthday" => $obj->birthday,
-      "birthyear" => $obj->birthyear,
-      "country_select" => $obj->country,
-      "zip_or_city" => $obj->city,
+      "orientation" => $obj['orientation'],
+      "orientation_dropdown" => $obj['orientation'],
+      "gender" => $obj['gender'],
+      "gender_dropdown" => $obj['gender'],
+      "birthmonth" => $obj['birthmonth'],
+      "birthday" => $obj['birthday'],
+      "birthyear" => $obj['birthyear'],
+      "country_select" => $obj['country'],
+      "zip_or_city" => $obj['city'],
       "locid" => "270999",
-      "lquery" => $obj->city,
-      "email" => $obj->email,
-      "email2" => $obj->email,
-      "screenname" => $obj->nickname,
-      "password" => "qwertyqwerty",
+      "lquery" => $obj['city'],
+      "email" => $obj['email'],
+      "email2" => $obj['email'],
+      "screenname" => $obj['nickname'],
+      "password" => $obj['password'],
       "gender_tags" => "999",
       "orientation_tags" => "999",
     ];
@@ -201,7 +198,7 @@ class check extends api
         "issue" => "Sorry, service ask CAPCHA for this IP. Currently prototype cant solve it",
       ];
 
-    $token = $this->login($obj->nickname, "qwertyqwerty");
+    $token = $this->login($obj->nickname, $obj['password']);
 
     //var_dump($_SESSION, $token);
 
@@ -211,8 +208,8 @@ class check extends api
         "issue" => "Registration failed. Empty server answer. Is your IP blacklisted already?",
       ];
 
-    $_SESSION['login'] = $obj->nickname;
-    $_SESSION['password'] = "qwertyqwerty";
+    $_SESSION['login'] = $obj['nickname'];
+    $_SESSION['password'] = $obj['password'];
 
     return
     [
@@ -220,7 +217,7 @@ class check extends api
     ];
   }
 
-  protected function login($username, $password)
+  final public function login($username, $password)
   {
     $url = "https://www.okcupid.com/login";
 
@@ -262,7 +259,7 @@ class check extends api
     return $matches[1];
   }
 
-  public function send_to($name, $message)
+  final public function send_to($name, $message)
   {
     phoxy_protected_assert($_SESSION['token'], "Login required!!");
     $url = "http://www.okcupid.com/apitun/messages/send?&access_token={$_SESSION['token']}";
@@ -290,7 +287,7 @@ class check extends api
     $res = $this->request_no_json($url, json_encode($post), $headers);
   }
 
-  protected function welcome($name, $message)
+  final public function welcome($name, $message)
   {
     phoxy_protected_assert($_SESSION['token'], "Login required!!");
     $url = "http://www.okcupid.com/apitun/messages/send?&access_token={$_SESSION['token']}";
@@ -311,7 +308,7 @@ class check extends api
     return $res->success && $res->status == 0 && $res->pending == 0;
   }
 
-  protected function get_receiver_by_nick($nick)
+  final public function get_receiver_by_nick($nick)
   {
     $site = $this->curl("http://www.okcupid.com/profile/{$nick}");
 
